@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .container.mt-5
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h1.mb-0 Photos
+      a.custom-upload(href='/photos/upload')
+        i.bi.bi-plus-lg.me-1
+        | Upload
+
+    .row.g-2
+      each photo in photos
+        .col-12.col-sm-6.col-md-4
+          .card.rounded-0.border-0
+            a(href='/photos/' + photo._id)
+              img.card-img-top.rounded-0(
+                style="width: 100%; aspect-ratio: 4/3;object-fit: cover;"
+                src=photo.imageurl
+                alt=photo.title
+              )
+            .card-body.p-1
+              .d-flex.justify-content-between.align-items-center
+                h5.card-title.mb-0= photo.title
+                a.custom-info(href='/photos/' + photo._id) 
+                  i.bi.bi-info-circle
+              p.card-text= photo.description

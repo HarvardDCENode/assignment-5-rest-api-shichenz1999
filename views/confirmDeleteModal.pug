@@ -1,0 +1,18 @@
+div#confirmDeleteModal.modal.fade(
+  tabindex='-1'
+  aria-labelledby='confirmDeleteModalLabel'
+  aria-hidden='true'
+)
+  div.modal-dialog.modal-dialog-centered
+    div.modal-content
+      div.modal-header
+        h5#confirmDeleteModalLabel.modal-title Delete Confirmation
+        button(type='button' class='custom-back ms-auto' data-bs-dismiss='modal' aria-label='Close')
+            i.bi.bi-x-lg
+      div.modal-body
+        p Are you sure you want to delete this photo? This action cannot be undone.
+      div.modal-footer
+        button(type='button' class='custom-cancel' data-bs-dismiss='modal')
+          | Cancel
+        button(type='button' class='custom-delete' onclick='document.getElementById("deleteForm").submit()')
+          | Delete

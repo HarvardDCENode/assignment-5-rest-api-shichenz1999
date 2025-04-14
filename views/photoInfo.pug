@@ -1,0 +1,77 @@
+extends layout
+
+block content
+  .container.mt-5
+    .col-12.col-md-6.offset-md-3
+      .row.align-items-center.mb-3
+        .col-4.text-start
+          a.custom-back(href='/photos') 
+            i.bi.bi-arrow-left
+        .col-4.text-center
+          h4 #{photo.title}
+        .col-4.text-end
+      
+      img.img-fluid.mb-4(src=photo.imageurl, alt=photo.title, width='100%')
+      
+      h5.mb-0
+        i.bi.bi-info-circle.me-2
+        | Metadata
+      
+      hr.divider-line
+      
+      .display-view
+        p 
+          span.metadata-label Title 
+          span.title #{photo.title}
+        p 
+          span.metadata-label Description 
+          span.description #{photo.description}
+        p 
+          span.metadata-label Filename 
+          span.filename #{photo.filename}
+        p 
+          span.metadata-label Size
+          span.size #{photo.size}
+        p 
+          span.metadata-label Created Date 
+          span.createdDate #{photo.createdDate.toLocaleString()}
+        p
+          span.metadata-label Updated Date 
+          span.updatedDate #{photo.updatedDate.toLocaleString()}
+        
+        .d-flex.justify-content-end.mt-4.mb-4
+          button.custom-edit.me-2#toggleInlineEditBtn(type="button") Edit 
+          form#deleteForm(method='POST', action='/photos/' + photo._id + '/delete')
+            button.custom-delete(
+              type='button'
+              data-bs-toggle='modal'
+              data-bs-target='#confirmDeleteModal'
+            ) Delete
+          include confirmDeleteModal  
+
+      //inlineEditForm(inital status: hidden)      
+      form#inlineEditForm(method="POST", action="/photos/" + photo._id + "/edit/", style="display: none;")
+        .mb-3
+          label.form-label(for="title") Title:
+          input#title.form-control(
+            type="text", 
+            name="title", 
+            value=photo.title, 
+            required
+          )
+        .mb-3
+          label.form-label(for="description") Description:
+          textarea#description.form-control(
+            name="description", 
+            rows="3", 
+            required
+          )= photo.description
+        .d-flex.justify-content-end.mt-4.mb-4
+          button.custom-cancel.me-2#cancelInlineEdit(type="button") Cancel
+          button.custom-submit(type="submit") Save
+          
+      
+
+          
+
+

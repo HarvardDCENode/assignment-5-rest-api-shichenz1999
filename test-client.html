@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <title>Photo API Test</title>
+  <style>
+    body {
+      padding: 2rem;
+      max-width: 90%;
+      margin: auto;
+    }
+    label, input, textarea {
+      display: block;
+      width: 100%;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+    }
+    .custom-button {
+      background-color: #f5f5f5;
+      border: 0.5px solid #ccc;
+      border-radius: 9999px;
+      padding: 0.5rem 1rem;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      margin-bottom: 1rem;
+    }
+    .custom-button:hover {
+      background-color: #444;
+      border-color: #444;
+      color: #fff;
+    }
+    .custom-delete {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #fff;
+    }
+    .custom-delete:hover {
+      background-color: #c82333;
+      border-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-center mb-4">Photo API Test Client</h1>
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <div class="mb-4">
+          <h3>List All Photos</h3>
+          <button class="custom-button" onclick="getPhotos()">GET /api/photos</button>
+        </div>
+
+        <div class="mb-4">
+          <h3>Upload a Photo</h3>
+          <input type="file" id="image" class="form-control" />
+          <input type="text" id="title" placeholder="Title" class="form-control" />
+          <textarea id="description" placeholder="Description" rows="3" class="form-control"></textarea>
+          <button class="custom-button" onclick="uploadPhoto()">POST /api/photos/upload</button>
+        </div>
+
+        <div class="mb-4">
+          <h3>Find a Photo by ID</h3>
+          <input type="text" id="findId" placeholder="Enter photo ID" class="form-control" />
+          <button class="custom-button" onclick="getPhotoById()">GET /api/photos/:id</button>
+        </div>
+
+        <div class="mb-4">
+          <h3>Update a Photo</h3>
+          <input type="text" id="updateId" placeholder="Enter photo ID" class="form-control" />
+          <input type="text" id="newTitle" placeholder="New Title" class="form-control" />
+          <textarea id="newDescription" placeholder="New Description" rows="3" class="form-control"></textarea>
+          <button class="custom-button" onclick="updatePhoto()">PUT /api/photos/:id</button>
+        </div>
+
+        <div class="mb-4">
+          <h3>Delete a Photo</h3>
+          <input type="text" id="deleteId" placeholder="Enter photo ID" class="form-control" />
+          <button class="custom-button custom-delete" onclick="deletePhoto()">DELETE /api/photos/:id</button>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <h3>Response Output</h3>
+        <pre id="output"></pre>
+      </div>
+    </div>
+  </div>
+  
+  
+
+  <script>
+    const API_BASE = 'http://localhost:8080/api/photos';
+    const output = document.getElementById('output');
+
+    function log(msg) {
+      output.textContent += msg + '\n';
+    }
+
+    async function getPhotos() {
+      output.textContent = '';
+      const res = await fetch(API_BASE);
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+
+    async function uploadPhoto() {
+      output.textContent = '';
+      const file = document.getElementById('image').files[0];
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('title', title);
+      formData.append('description', description);
+
+      const res = await fetch(`${API_BASE}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+
+    async function getPhotoById() {
+      output.textContent = '';
+      const id = document.getElementById('findId').value;
+      const res = await fetch(`${API_BASE}/${id}`);
+      if (!res.ok) return log(`Error: ${res.status}`);
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+
+    async function updatePhoto() {
+      output.textContent = '';
+      const id = document.getElementById('updateId').value;
+      const title = document.getElementById('newTitle').value;
+      const description = document.getElementById('newDescription').value;
+
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description })
+      });
+      if (!res.ok) return log(`Error: ${res.status}`);
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+
+    async function deletePhoto() {
+      output.textContent = '';
+      const id = document.getElementById('deleteId').value;
+      const res = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+      if (!res.ok) return log(`Error: ${res.status}`);
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+  </script>
+</body>
+</html>
+
+

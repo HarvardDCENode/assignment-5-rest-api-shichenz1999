@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  .container.mt-5
+    .row.mb-4
+      .col-12.col-md-6.offset-md-3
+        .row
+          .col-4.text-start
+            a.custom-back(href='/photos') 
+              i.bi.bi-arrow-left
+          .col-4.text-center
+            h4 Upload Photo
+          .col-4.text-end
+    .row
+      .col-12.col-md-6.offset-md-3
+        if flashMsg && flashMsg.length > 0
+          .custom-danger #{flashMsg}
+        form(method='POST', action='/photos/upload/', enctype='multipart/form-data')
+          .form-group.mb-3
+            label(for='image') Image
+            input#image.form-control(type='file', name='image', required)
+          .form-group.mb-3
+            label(for='title') Title
+            input#title.form-control(type='text', name='title', required)
+          .form-group.mb-3
+            label(for='description') Description
+            textarea#description.form-control(name='description', required)
+          .d-flex.justify-content-end.mt-4
+            button.custom-submit(type='submit') Submit
