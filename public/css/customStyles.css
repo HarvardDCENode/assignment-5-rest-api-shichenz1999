@@ -53,9 +53,6 @@ p {
   align-items: center;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
-.custom-info:hover {
-  /* No hover styles defined */
-}
 
 /* Custom Submit Button */
 .custom-submit {
