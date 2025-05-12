@@ -21,11 +21,9 @@ block content
             .card-body.p-1
               .d-flex.justify-content-between.align-items-center
                 h5.card-title.mb-0= photo.title
-                a.custom-info(href='/photos/' + photo._id) 
-                  i.bi.bi-info-circle
-              p.card-text= photo.description
-              .d-flex.justify-content-between.align-items-center.mt-2
-                button.btn.btn-sm.custom-like.like-btn(
+              .d-flex.justify-content-between.align-items-center
+                p.card-text.mb-0= photo.description
+                button.btn.custom-like.like-btn(
                   data-photoid=photo._id
                   data-liked=(photo.liked || false)
                 )
