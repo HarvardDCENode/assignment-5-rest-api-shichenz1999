@@ -24,3 +24,10 @@ block content
                 a.custom-info(href='/photos/' + photo._id) 
                   i.bi.bi-info-circle
               p.card-text= photo.description
+              .d-flex.justify-content-between.align-items-center.mt-2
+                button.btn.btn-sm.custom-like.like-btn(
+                  data-photoid=photo._id
+                  data-liked=(photo.liked || false)
+                )
+                  i.bi(class= (photo.liked ? 'bi-heart-fill' : 'bi-heart') )
+                  span.ms-1.like-count= photo.likes

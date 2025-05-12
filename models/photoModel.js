@@ -9,6 +9,7 @@ const schema = new Schema({
     description: { type: String, required: false },
     imageurl: { type: String, required: true },
     size: { type: String, required: true },
+    likes: { type: Number, default: 0 },
     createdDate: {type: Date},
     updatedDate: {type: Date}
 });

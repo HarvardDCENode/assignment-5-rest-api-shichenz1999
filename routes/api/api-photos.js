@@ -84,4 +84,16 @@ router.delete('/:photoid', async (req, res, next) => {
     }
 });
 
+// photos/:photoid/like PATCH - toggle like/unlike
+router.patch('/:photoid/like', async (req, res, next) => {
+    try {
+        const { liked } = req.body;
+        const photo = await PhotoService.toggleLike(req.params.photoid, liked);
+        res.json({ likes: photo.likes });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
 module.exports = router;

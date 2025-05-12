@@ -98,6 +98,17 @@ router.post('/:photoid/delete', async (req, res, next) => {
     }
 });
 
+//like
+router.patch('/:id/like', async (req, res, next) => {
+    try {
+      const { liked } = req.body;
+      const photo = await PhotoService.toggleLike(req.params.id, liked);
+      res.json({ likes: photo.likes });
+    } catch (err) {
+      next(err);
+    }
+  });
+
 router.use((err, req, res, next) => {
     console.error(err.stack);
     if (err.message === 'OnlyImageFilesAllowed') {

@@ -81,6 +81,18 @@ class PhotoService {
         }
         return photo;
     }
+
+    //toogleLike
+    static async toggleLike(id, liked) {
+        const delta = liked ? 1 : -1;
+        const photo = await Photo.findByIdAndUpdate(
+          id,
+          { $inc: { likes: delta } },
+          { new: true }
+        );
+        if (!photo) throw new Error('PhotoNotFound');
+        return photo;
+      }
 }
 
 module.exports.storage = storage;

@@ -86,6 +86,19 @@
           <input type="text" id="deleteId" placeholder="Enter photo ID" class="form-control" />
           <button class="custom-button custom-delete" onclick="deletePhoto()">DELETE /api/photos/:id</button>
         </div>
+        
+        <div class="mb-4">
+          <h3>Toggle Like</h3>
+          <input type="text" id="likeId" placeholder="Enter photo ID" class="form-control" />
+          <div class="d-flex gap-2 mt-2">
+            <button class="custom-button" onclick="likePhoto()">
+              Like (PATCH /api/photos/:id/like)
+            </button>
+            <button class="custom-button" onclick="unlikePhoto()">
+              Unlike (PATCH /api/photos/:id/like)
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="col-md-5">
@@ -159,6 +172,34 @@
       output.textContent = '';
       const id = document.getElementById('deleteId').value;
       const res = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+      if (!res.ok) return log(`Error: ${res.status}`);
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+
+    async function likePhoto() {
+      output.textContent = '';
+      const id = document.getElementById('likeId').value.trim();
+      if (!id) return log('Please enter a photo ID.');
+      const res = await fetch(`${API_BASE}/${id}/like`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ liked: true })
+      });
+      if (!res.ok) return log(`Error: ${res.status}`);
+      const data = await res.json();
+      log(JSON.stringify(data, null, 2));
+    }
+
+    async function unlikePhoto() {
+      output.textContent = '';
+      const id = document.getElementById('likeId').value.trim();
+      if (!id) return log('Please enter a photo ID.');
+      const res = await fetch(`${API_BASE}/${id}/like`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ liked: false })
+      });
       if (!res.ok) return log(`Error: ${res.status}`);
       const data = await res.json();
       log(JSON.stringify(data, null, 2));
